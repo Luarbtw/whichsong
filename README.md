@@ -1,27 +1,76 @@
-# Playlist Quiz
+# Whichsong?
 
-Quiz musical em React, TypeScript, Vite e Tailwind CSS. O jogo tem uma playlist fictícia local e pode importar playlists públicas e álbuns do Deezer.
+Um jogo de reconhecimento musical feito com React, TypeScript e Vite. Cole o link de uma playlist ou de um álbum público do Deezer, ou experimente a playlist de demonstração, e tente reconhecer as faixas ouvindo trechos curtos. Me baseei em um antigo joguinho que tinha no Facebook cujo nome não me recordo. Tentei muito fazer a integração com a API do spotify mas aparentemente eles tiraram rota de preview das músicas, então recorri ao Deezer e sinceramente supriu muito bem minha necessidade.
 
-## Rodar localmente
+## Como jogar
+
+1. Cole o link de uma playlist pública ou de um álbum do Deezer.
+2. Escolha a duração do trecho, de 1 a 6 segundos.
+3. Ouça cada trecho e escolha a música correta entre quatro opções.
+4. Veja sua pontuação ao final das 10 rodadas.
+
+Também é possível iniciar uma partida com a playlist de demonstração, sem fornecer um link do Deezer, mas é mais pra ver como funciona o jogo e as "músicas" são só uns sons de bip genéricos.
+
+## Funcionalidades
+
+- Importação de playlists públicas e álbuns do Deezer.
+- Reprodução de previews disponíveis, limitada à duração escolhida.
+- Escolha de trechos de 1 a 6 segundos antes da partida.
+- Dez rodadas com quatro opções de música e artista.
+- Playlist de demonstração com áudio sintetizado.
+- Interface responsiva em português.
+
+## Tecnologias
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- Lucide React
+
+## Executar localmente
+
+Requer Node.js e npm instalados.
 
 ```bash
+git clone https://github.com/SEU-USUARIO/whichsong.git
+cd whichsong
 npm install
-npm run dev -- --host 127.0.0.1
+npm run dev
 ```
 
-Cole o link de uma playlist pública ou de um álbum do Deezer na tela inicial. O proxy definido no Vite encaminha as chamadas da aplicação local para a API pública do Deezer, evitando chamadas cross-origin bloqueadas pelo navegador.
+Abra no navegador o endereço local mostrado pelo Vite no terminal. Não é necessário configurar credenciais ou arquivo `.env` para executar o projeto localmente.
 
-## Limites do modo Deezer
+## Build de produção
 
-- O importador lê playlists públicas. Playlists privadas exigiriam acesso OAuth/app aprovado pela Deezer.
-- A API e a disponibilidade de cadastros de novos apps podem mudar. Se a Deezer bloquear o endpoint ou exigir aprovação para seu uso, será necessário solicitar acesso à equipe de desenvolvedores; o projeto não usa endpoints internos nem scraping.
-- A Deezer exige aprovação antes de disponibilizar online aplicações que usam sua API. Este setup é para desenvolvimento local e uso pessoal; consulte os termos da Deezer antes de publicar ou permitir acesso a outras pessoas.
-- Algumas faixas não têm preview. O jogo informa quando o áudio não está disponível e oferece o link da faixa na Deezer após a resposta. Quando disponível, o preview é interrompido pelo jogo após três segundos.
-- Para produção, substitua o proxy de desenvolvimento do Vite por um endpoint de backend próprio, configurado para encaminhar as chamadas à API Deezer.
+```bash
+npm run build
+npm run preview
+```
 
-## Estrutura
+O comando de build gera os arquivos estáticos na pasta `dist/`. O `npm run preview` serve essa build localmente para conferência.
 
-- `src/services/deezer.ts`: leitura de playlist, paginação, validação do link e normalização de faixas.
-- `src/hooks/useAudioPreview.ts`: reprodução de previews por três segundos e áudio sintetizado para a playlist demo.
-- `src/data/demoPlaylist.ts`: playlist fictícia local.
-- `src/App.tsx`: telas e fluxo do quiz.
+## Integração com o Deezer
+
+Durante o desenvolvimento, o servidor do Vite encaminha as requisições de `/api/deezer` para `https://api.deezer.com`, evitando que o navegador faça a chamada diretamente para outro domínio. Essa configuração está em `vite.config.ts` e funciona no servidor local do Vite.
+
+A aplicação usa apenas playlists públicas e álbuns. Playlists privadas não são suportadas. A disponibilidade de previews depende da faixa e do retorno do Deezer; algumas músicas podem não ter um trecho disponível.
+
+## Estrutura principal
+
+```text
+src/
+├── data/demoPlaylist.ts       # Playlist fictícia para demonstração
+├── hooks/useAudioPreview.ts   # Reprodução e interrupção dos trechos
+├── services/deezer.ts         # Importação de playlists e álbuns
+├── App.tsx                    # Telas e fluxo do jogo
+└── style.css                  # Estilos da aplicação
+```
+
+## Scripts
+
+| Comando | Descrição |
+| --- | --- |
+| `npm run dev` | Inicia o servidor de desenvolvimento do Vite |
+| `npm run build` | Verifica os tipos e gera a build de produção |
+| `npm run preview` | Serve localmente a build de produção |
