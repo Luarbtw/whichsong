@@ -1,18 +1,38 @@
 import { useMemo, useState } from 'react';
-import { ArrowLeft, ArrowRight, Check, ExternalLink, Music2, Pause, Play, RotateCcw, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, ExternalLink, Music2, Pause, Play, RotateCcw, Volume2, VolumeX, X } from 'lucide-react';
 import { demoPlaylist } from './data/demoPlaylist';
 import { useAudioPreview } from './hooks/useAudioPreview';
 import { extractDeezerCollection, importDeezerCollection } from './services/deezer';
 import type { Playlist, Track } from './types';
 
-const ROUNDS = 10;
+const MAX_ROUNDS = 30;
 type Round = { answer: Track; choices: Track[] };
 type Screen = 'home' | 'game' | 'results';
 
-function makeRounds(tracks: Track[]): Round[] {
+function VolumeControl({ volume, onChange }: { volume: number; onChange: (volume: number) => void }) {
+  return (
+    <label className="volume-control" title="Ajustar volume">
+      {volume === 0 ? <VolumeX size={17} aria-hidden="true" /> : <Volume2 size={17} aria-hidden="true" />}
+      <input
+        type="range"
+        min="0"
+        max="100"
+        step="1"
+        value={volume}
+        style={{ '--range-value': `${volume}%` } as React.CSSProperties}
+        onChange={event => onChange(Number(event.target.value))}
+        aria-label="Volume"
+        aria-valuetext={`${volume}%`}
+      />
+      <span>{volume}%</span>
+    </label>
+  );
+}
+
+function makeRounds(tracks: Track[], requestedRounds: number): Round[] {
   const pool = tracks.filter(track => track.previewUrl || track.demoAudio);
   const rounds: Round[] = [];
-  for (let i = 0; i < Math.min(ROUNDS, pool.length); i++) {
+  for (let i = 0; i < Math.min(requestedRounds, pool.length); i++) {
     const answer = pool.splice(Math.floor(Math.random() * pool.length), 1)[0];
     const distractors = tracks.filter(track => track.id !== answer.id).sort(() => Math.random() - 0.5).slice(0, 3);
     rounds.push({ answer, choices: [answer, ...distractors].sort(() => Math.random() - 0.5) });
@@ -26,6 +46,8 @@ export default function App() {
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState<(string | null)[]>([]);
   const [playlist, setPlaylist] = useState<Playlist>(demoPlaylist);
+  const [roundCount, setRoundCount] = useState(10);
+  const [volume, setVolume] = useState(15);
   const [link, setLink] = useState('');
   const [clipSeconds, setClipSeconds] = useState(3);
   const [loading, setLoading] = useState(false);
@@ -35,9 +57,9 @@ export default function App() {
   const chosen = answers[index] ?? null;
   const correct = useMemo(() => answers.filter((id, i) => id && id === rounds[i]?.answer.id).length, [answers, rounds]);
 
-  function start(list: Playlist) {
+  function start(list: Playlist, requestedRounds = roundCount) {
     audio.stop();
-    const nextRounds = makeRounds(list.tracks);
+    const nextRounds = makeRounds(list.tracks, requestedRounds);
     if (!nextRounds.length) {
       setNotice('Não há previews disponíveis nesta seleção. Tente outra playlist ou o modo demo.');
       return;
@@ -95,6 +117,7 @@ export default function App() {
   if (screen === 'home') {
     return (
       <main className="landing">
+        <VolumeControl volume={volume} onChange={setVolume} />
         <div className="landing-glow" aria-hidden="true" />
         <section className="landing-content">
           <p className="landing-kicker">UM JOGO DE OUVIDO</p>
@@ -118,11 +141,29 @@ export default function App() {
               max="6"
               step="1"
               value={clipSeconds}
-              style={{ '--range-value': clipSeconds } as React.CSSProperties}
+              style={{ '--range-value': `${((clipSeconds - 1) / 5) * 100}%` } as React.CSSProperties}
               onChange={event => setClipSeconds(Number(event.target.value))}
               aria-valuetext={`${clipSeconds} ${clipSeconds === 1 ? 'segundo' : 'segundos'}`}
             />
             <div className="duration-values" aria-hidden="true"><span>1s</span><span>2s</span><span>3s</span><span>4s</span><span>5s</span><span>6s</span></div>
+          </div>
+
+          <div className="extra-settings">
+            <div className="duration-control compact-setting">
+              <label htmlFor="round-count">QUANTIDADE DE RODADAS <strong>{roundCount}</strong></label>
+              <input
+                id="round-count"
+                type="range"
+                min="5"
+                max={MAX_ROUNDS}
+                step="1"
+                value={roundCount}
+                style={{ '--range-value': `${((roundCount - 5) / (MAX_ROUNDS - 5)) * 100}%` } as React.CSSProperties}
+                onChange={event => setRoundCount(Number(event.target.value))}
+                aria-valuetext={`${roundCount} rodadas`}
+              />
+              <div className="duration-values" aria-hidden="true"><span>5</span><span>30</span></div>
+            </div>
           </div>
 
           <form className="playlist-form" onSubmit={event => { event.preventDefault(); void importLink(); }}>
@@ -148,7 +189,7 @@ export default function App() {
             ou experimentar a playlist de demonstração <ArrowRight size={13} />
           </button>
         </section>
-        <footer className="landing-footer"><span>FEITO PARA QUEM OUVE DE VERDADE</span><span>10 RODADAS · SEM REPETIÇÕES</span></footer>
+        <footer className="landing-footer"><span>FEITO PARA QUEM OUVE DE VERDADE</span><span>{roundCount} RODADAS · SEM REPETIÇÕES</span></footer>
       </main>
     );
   }
@@ -159,7 +200,7 @@ export default function App() {
       <main className="app-shell results-screen">
         <header className="game-header">
           <button className="wordmark" onClick={goHome}>Whichsong<span>?</span></button>
-          <button className="quiet-button" onClick={goHome}><ArrowLeft size={15} /> Início</button>
+          <div className="header-actions"><VolumeControl volume={volume} onChange={setVolume} /><button className="quiet-button" onClick={goHome}><ArrowLeft size={15} /> Início</button></div>
         </header>
         <section className="results-content">
           <div className="results-kicker">FIM DE JOGO <span>·</span> {playlist.name}</div>
@@ -186,7 +227,7 @@ export default function App() {
       <header className="game-header">
         <button className="wordmark" onClick={goHome}>Whichsong<span>?</span></button>
         <div className="header-center">{playlist.name}</div>
-        <button className="quiet-button" onClick={goHome}><X size={15} /> Sair</button>
+        <div className="header-actions"><VolumeControl volume={volume} onChange={setVolume} /><button className="quiet-button" onClick={goHome}><X size={15} /> Sair</button></div>
       </header>
 
       <section className="quiz-wrap">
@@ -201,7 +242,7 @@ export default function App() {
           <button
             className={`play-disc ${audio.playing ? 'is-playing' : ''}`}
             disabled={!!chosen}
-            onClick={() => audio.play(round.answer, clipSeconds)}
+            onClick={() => audio.play(round.answer, clipSeconds, volume / 100)}
             aria-label={audio.playing ? 'Reproduzindo trecho' : 'Reproduzir trecho'}
           >
             {audio.playing ? <Pause size={27} fill="currentColor" /> : <Play size={27} fill="currentColor" />}

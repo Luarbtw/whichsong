@@ -7,7 +7,7 @@ Um jogo de reconhecimento musical feito com React, TypeScript e Vite. Cole o lin
 1. Cole o link de uma playlist pública ou de um álbum do Deezer.
 2. Escolha a duração do trecho, de 1 a 6 segundos.
 3. Ouça cada trecho e escolha a música correta entre quatro opções.
-4. Veja sua pontuação ao final das 10 rodadas.
+4. Veja sua pontuação ao final da partida, com até 30 rodadas.
 
 Também é possível iniciar uma partida com a playlist de demonstração, sem fornecer um link do Deezer, mas é mais pra ver como funciona o jogo e as "músicas" são só uns sons de bip genéricos.
 
@@ -16,8 +16,9 @@ Também é possível iniciar uma partida com a playlist de demonstração, sem f
 - Importação de playlists públicas e álbuns do Deezer.
 - Reprodução de previews disponíveis, limitada à duração escolhida.
 - Escolha de trechos de 1 a 6 segundos antes da partida.
-- Dez rodadas com quatro opções de música e artista.
-- Playlist de demonstração com áudio sintetizado.
+- Quantidade ajustável de 5 a 30 rodadas, com quatro opções de música e artista.
+- Controle de volume para os previews e o áudio da demonstração.
+- Playlist de demonstração com 30 faixas fictícias e áudio sintetizado.
 - Interface responsiva em português.
 
 ## Tecnologias
