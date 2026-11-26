@@ -59,6 +59,24 @@ Durante o desenvolvimento, o servidor do Vite encaminha as requisições de `/ap
 
 A aplicação usa apenas playlists públicas e álbuns. Playlists privadas não são suportadas. A disponibilidade de previews depende da faixa e do retorno do Deezer; algumas músicas podem não ter um trecho disponível.
 
+## Publicar na Vercel
+
+O arquivo `vercel.json` encaminha as requisições de `/api/deezer` à API pública do Deezer usando um rewrite externo da Vercel. Assim, o jogo mantém a integração depois de sair do servidor local do Vite.
+
+1. Envie o projeto para um repositório no GitHub:
+
+   ```bash
+   git add .
+   git commit -m "Prepare for Vercel deployment"
+   git push
+   ```
+
+2. Na Vercel, escolha **Add New → Project** e importe o repositório do GitHub.
+3. Confirme que o framework detectado é **Vite**, a raiz do projeto é `./`, o comando de build é `npm run build` e a pasta de saída é `dist`.
+4. Selecione **Deploy**. Não são necessárias variáveis de ambiente para esta integração pública com o Deezer.
+
+A Vercel costuma detectar automaticamente as configurações de build para projetos Vite. O rewrite externo está documentado no [guia da Vercel](https://vercel.com/docs/routing/rewrites).
+
 ## Estrutura principal
 
 ```text

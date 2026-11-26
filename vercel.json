@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/api/deezer/:path*",
+      "destination": "https://api.deezer.com/:path*"
+    }
+  ]
+}
