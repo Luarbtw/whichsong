@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Climate+Crisis:YEAR@1979&display=swap');
 
 :root {
   font-family: 'DM Sans', sans-serif;
@@ -1694,6 +1695,12 @@ input:focus-visible {
 .playlist-star-border .input-wrap button,
 .playlist-star-border .input-wrap button:hover {
   border-radius: var(--star-border-radius, 27px);
+}
+
+.landing h1 {
+  font-family: 'Climate Crisis', sans-serif;
+  font-weight: 400;
+  letter-spacing: -.025em;
 }
 
 @media (max-width: 420px) {

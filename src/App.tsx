@@ -16,12 +16,23 @@ function BackgroundLayer() {
     <div className="background-layer" aria-hidden="true">
       <CRTWarp
         color="#5767fc"
-        backgroundColor="#0a0a0a"
+        backgroundColor="#090a2a"
         brightness={0.55}
         bloom={0.8}
-        noise={0.04}
+        rgbShift={0.005}
+        noise={0}
         flicker={0}
         interference={0}
+        mask="none"
+        curvature={0.3}
+        persistence={0.53}
+        speed={0.3}
+        variation={2}
+        waveAmplitude={1}
+        waveFrequency={3}
+        columns={200}
+        scanlineStrength={0.29}
+        bloomRadius={1.3}
         mouseReact={false}
         changeOnClick={false}
         dpr={1}
