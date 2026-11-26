@@ -2,6 +2,10 @@
 
 Um jogo de reconhecimento musical feito com React, TypeScript e Vite. Cole o link de uma playlist ou de um álbum público do Deezer, ou experimente a playlist de demonstração, e tente reconhecer as faixas ouvindo trechos curtos. Me baseei em um antigo joguinho que tinha no Facebook cujo nome não me recordo. Tentei muito fazer a integração com a API do spotify mas aparentemente eles tiraram rota de preview das músicas, então recorri ao Deezer e sinceramente supriu muito bem minha necessidade.
 
+# Link do Vercel
+
+https://whichsong.vercel.app
+
 ## Como jogar
 
 1. Cole o link de uma playlist pública ou de um álbum do Deezer.
