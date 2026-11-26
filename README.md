@@ -21,6 +21,7 @@ Também é possível iniciar uma partida com a playlist de demonstração, sem f
 - Playlist de demonstração com 30 faixas fictícias e áudio sintetizado.
 - Fundo animado CRT Warp do React Bits, renderizado em WebGL.
 - Borda animada StarBorder no campo de link do Deezer.
+- Texto GradientText animado em “song?” no título principal.
 - Interface responsiva em português.
 
 ## Tecnologias
@@ -85,6 +86,7 @@ src/
 ├── hooks/useAudioPreview.ts   # Reprodução e interrupção dos trechos
 ├── components/CRTWarp.jsx     # Fundo WebGL inspirado em um monitor CRT
 ├── components/StarBorder.jsx  # Borda animada do campo de link
+├── components/GradientText.jsx # Gradiente animado no título principal
 ├── services/deezer.ts         # Importação de playlists e álbuns
 ├── App.tsx                    # Telas e fluxo do jogo
 └── style.css                  # Estilos da aplicação

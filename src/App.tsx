@@ -5,6 +5,7 @@ import { useAudioPreview } from './hooks/useAudioPreview';
 import { extractDeezerCollection, importDeezerCollection } from './services/deezer';
 import CRTWarp from './components/CRTWarp';
 import StarBorder from './components/StarBorder';
+import GradientText from './components/GradientText';
 import type { Playlist, Track } from './types';
 
 const MAX_ROUNDS = 30;
@@ -155,8 +156,19 @@ export default function App() {
         <VolumeControl volume={volume} onChange={setVolume} />
         <div className="landing-glow" aria-hidden="true" />
         <section className="landing-content">
-          <p className="landing-kicker">UM JOGO DE OUVIDO</p>
-          <h1>Whichsong<span>?</span></h1>
+          <h1>
+            Which<GradientText
+              className="title-gradient"
+              colors={['#907ade', '#4e28ac', '#3e8bf6']}
+              animationSpeed={3}
+              variant="flow"
+              direction="horizontal"
+              glow={0.25}
+              style={{}}
+            >
+              Song
+            </GradientText><span className="title-question">?</span>
+          </h1>
           <p className="landing-intro">Será que você reconhece a música?</p>
 
           <div className="how-to-play" aria-label="Como jogar">

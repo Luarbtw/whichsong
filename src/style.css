@@ -1701,9 +1701,29 @@ input:focus-visible {
   font-family: 'Climate Crisis', sans-serif;
   font-weight: 400;
   letter-spacing: -.025em;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.landing h1 .title-gradient {
+  flex: 0 0 auto;
+  margin: 0;
+  vertical-align: baseline;
+}
+
+.landing h1 .title-question {
+  flex: 0 0 auto;
+  color: var(--text);
 }
 
 @media (max-width: 420px) {
+  .landing h1 {
+    font-size: clamp(42px, 13.5vw, 58px);
+  }
+
   .playlist-star-border {
     height: 68px;
     border-radius: 17px;
