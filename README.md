@@ -19,6 +19,8 @@ Também é possível iniciar uma partida com a playlist de demonstração, sem f
 - Quantidade ajustável de 5 a 30 rodadas, com quatro opções de música e artista.
 - Controle de volume para os previews e o áudio da demonstração.
 - Playlist de demonstração com 30 faixas fictícias e áudio sintetizado.
+- Fundo animado CRT Warp do React Bits, renderizado em WebGL.
+- Borda animada StarBorder no campo de link do Deezer.
 - Interface responsiva em português.
 
 ## Tecnologias
@@ -63,6 +65,8 @@ A aplicação usa apenas playlists públicas e álbuns. Playlists privadas não 
 src/
 ├── data/demoPlaylist.ts       # Playlist fictícia para demonstração
 ├── hooks/useAudioPreview.ts   # Reprodução e interrupção dos trechos
+├── components/CRTWarp.jsx     # Fundo WebGL inspirado em um monitor CRT
+├── components/StarBorder.jsx  # Borda animada do campo de link
 ├── services/deezer.ts         # Importação de playlists e álbuns
 ├── App.tsx                    # Telas e fluxo do jogo
 └── style.css                  # Estilos da aplicação

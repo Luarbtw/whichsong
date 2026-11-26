@@ -56,6 +56,15 @@ input:focus-visible {
   justify-content: center;
   padding: 54px 26px 72px;
   overflow: hidden;
+  isolation: isolate;
+}
+
+.background-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: .1;
+  pointer-events: none;
 }
 
 .landing-glow {
@@ -302,6 +311,8 @@ input:focus-visible {
 /* Jogo */
 
 .app-shell {
+  position: relative;
+  isolation: isolate;
   width: min(100%, 1080px);
   min-height: 100vh;
   margin: 0 auto;
@@ -1641,5 +1652,60 @@ input:focus-visible {
 
   .landing > .volume-control input[type=range] {
     width: 66px;
+  }
+}
+
+/* Borda animada do campo Deezer */
+.playlist-star-border {
+  width: min(100%, 580px);
+  height: 76px;
+  padding: 0;
+  border-radius: 20px;
+  box-shadow: 0 0 0 0 rgba(87, 103, 252, 0);
+  transition: transform .25s ease, box-shadow .3s ease;
+}
+
+.playlist-star-border:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .28), 0 0 30px rgba(87, 103, 252, .14);
+}
+
+.playlist-star-border:focus-within {
+  box-shadow: 0 0 0 5px rgba(87, 103, 252, .16), 0 0 36px rgba(87, 103, 252, .24);
+}
+
+.playlist-star-border .input-wrap,
+.playlist-star-border .input-wrap:hover,
+.playlist-star-border .input-wrap:focus-within {
+  width: 100%;
+  height: 100%;
+  padding: 8px 10px 8px 22px;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+.playlist-star-border .input-wrap input {
+  outline: 0;
+}
+
+.playlist-star-border .input-wrap button,
+.playlist-star-border .input-wrap button:hover {
+  border-radius: var(--star-border-radius, 27px);
+}
+
+@media (max-width: 420px) {
+  .playlist-star-border {
+    height: 68px;
+    border-radius: 17px;
+  }
+
+  .playlist-star-border .input-wrap,
+  .playlist-star-border .input-wrap:hover,
+  .playlist-star-border .input-wrap:focus-within {
+    padding-left: 15px;
+    gap: 9px;
   }
 }

@@ -3,11 +3,34 @@ import { ArrowLeft, ArrowRight, Check, ExternalLink, Music2, Pause, Play, Rotate
 import { demoPlaylist } from './data/demoPlaylist';
 import { useAudioPreview } from './hooks/useAudioPreview';
 import { extractDeezerCollection, importDeezerCollection } from './services/deezer';
+import CRTWarp from './components/CRTWarp';
+import StarBorder from './components/StarBorder';
 import type { Playlist, Track } from './types';
 
 const MAX_ROUNDS = 30;
 type Round = { answer: Track; choices: Track[] };
 type Screen = 'home' | 'game' | 'results';
+
+function BackgroundLayer() {
+  return (
+    <div className="background-layer" aria-hidden="true">
+      <CRTWarp
+        color="#5767fc"
+        backgroundColor="#0a0a0a"
+        brightness={0.55}
+        bloom={0.8}
+        noise={0.04}
+        flicker={0}
+        interference={0}
+        mouseReact={false}
+        changeOnClick={false}
+        dpr={1}
+        fps={30}
+        style={{ width: '100%', height: '100%' }}
+      />
+    </div>
+  );
+}
 
 function VolumeControl({ volume, onChange }: { volume: number; onChange: (volume: number) => void }) {
   return (
@@ -117,6 +140,7 @@ export default function App() {
   if (screen === 'home') {
     return (
       <main className="landing">
+        <BackgroundLayer />
         <VolumeControl volume={volume} onChange={setVolume} />
         <div className="landing-glow" aria-hidden="true" />
         <section className="landing-content">
@@ -168,19 +192,36 @@ export default function App() {
 
           <form className="playlist-form" onSubmit={event => { event.preventDefault(); void importLink(); }}>
             <label htmlFor="playlist-link">SUA PLAYLIST OU ÁLBUM</label>
-            <div className="input-wrap">
-              <Music2 size={18} aria-hidden="true" />
-              <input
-                id="playlist-link"
-                aria-label="Link de playlist ou álbum do Deezer"
-                placeholder="Cole aqui seu link do Deezer"
-                value={link}
-                onChange={event => { setLink(event.target.value); setNotice(''); }}
-              />
-              <button type="submit" aria-label="Começar jogo" disabled={loading}>
-                {loading ? <span className="spinner" /> : <ArrowRight size={19} />}
-              </button>
-            </div>
+            <StarBorder
+              as="div"
+              className="playlist-star-border"
+              color="#5767fc"
+              trailColor="#aeb8ff"
+              backgroundColor="#141522"
+              textColor="#f5f2fa"
+              borderColor="rgba(87, 103, 252, .3)"
+              duration={3.5}
+              thickness={2}
+              radius={27}
+              trailLength={0.28}
+              glow={0.55}
+              hover="lap"
+              style={{}}
+            >
+              <div className="input-wrap">
+                <Music2 size={18} aria-hidden="true" />
+                <input
+                  id="playlist-link"
+                  aria-label="Link de playlist ou álbum do Deezer"
+                  placeholder="Cole aqui seu link do Deezer"
+                  value={link}
+                  onChange={event => { setLink(event.target.value); setNotice(''); }}
+                />
+                <button type="submit" aria-label="Começar jogo" disabled={loading}>
+                  {loading ? <span className="spinner" /> : <ArrowRight size={19} />}
+                </button>
+              </div>
+            </StarBorder>
             <div className="form-note"><span className="deezer-dot" /> Playlists públicas e álbuns do Deezer</div>
           </form>
 
@@ -198,6 +239,7 @@ export default function App() {
     const percentage = rounds.length ? Math.round(correct / rounds.length * 100) : 0;
     return (
       <main className="app-shell results-screen">
+        <BackgroundLayer />
         <header className="game-header">
           <button className="wordmark" onClick={goHome}>Whichsong<span>?</span></button>
           <div className="header-actions"><VolumeControl volume={volume} onChange={setVolume} /><button className="quiet-button" onClick={goHome}><ArrowLeft size={15} /> Início</button></div>
@@ -224,6 +266,7 @@ export default function App() {
 
   return (
     <main className="app-shell game-screen">
+      <BackgroundLayer />
       <header className="game-header">
         <button className="wordmark" onClick={goHome}>Whichsong<span>?</span></button>
         <div className="header-center">{playlist.name}</div>
